@@ -15,6 +15,13 @@ jobs:
     - name: gofmt
       run: test -z $(gofmt -l .) || (gofmt -d . && exit 1)
 
+  lint:
+    name: Lint (golangci-lint)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions-contrib/golangci-lint@master
+        args: run
+
   build:
     name: Build (Docker)
     runs-on: ubuntu-latest
