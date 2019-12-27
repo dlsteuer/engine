@@ -5,8 +5,10 @@ import (
 	"math/rand"
 	"os"
 	"path"
+	"path/filepath"
 	"plugin"
 	"runtime"
+	"strings"
 	"sync"
 	"time"
 
@@ -127,23 +129,44 @@ func initializeRulesets() map[string]rules.Ruleset {
 		log.WithError(err).Error("unable to retrieve user home dir")
 		return rulesets
 	}
-	p, err := plugin.Open(path.Join(homeDir, ".battlesnake/rulesets/standard.so"))
+	plugins, err := filepath.Glob(path.Join(homeDir, ".battlesnake/rulesets/*.so"))
 	if err != nil {
-		log.WithError(err).Error("unable to load standard ruleset")
+		log.WithError(err).Error("unable to retrieve plugin listing")
 		return rulesets
+	}
+	for _, p := range plugins {
+		name, rs, err := loadPlugin(p)
+		if err != nil {
+			log.WithError(err).WithField("plugin", p).Error("unable to load plugin")
+			continue
+		}
+
+		log.WithField("name", name).Info("loaded ruleset")
+		rulesets[name] = rs
+	}
+
+	return rulesets
+}
+
+func loadPlugin(pluginPath string) (name string, rs rules.Ruleset, err error) {
+	p, err := plugin.Open(pluginPath)
+	if err != nil {
+		log.WithError(err).Error("unable to load ruleset")
+		return "", nil, err
 	}
 
 	srs, err := p.Lookup("Ruleset")
 	if err != nil {
 		log.WithError(err).Error("unable to find ruleset symbol in plugin")
-		return rulesets
+		return "", nil, err
 	}
 
 	rs, ok := srs.(rules.Ruleset)
 	if !ok {
-		log.WithError(err).Error("standard ruleset does not match ruleset interface")
+		log.WithError(err).Error("ruleset does not match ruleset interface")
+		return "", nil, err
 	}
 
-	rulesets["standard"] = rs
-	return rulesets
+	name = strings.TrimRight(path.Base(pluginPath), ".so")
+	return name, rs, nil
 }

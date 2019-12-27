@@ -45,7 +45,12 @@ func (w *Worker) Runner(ctx context.Context, client pb.ControllerClient, id stri
 	lastFrame := resp.LastFrame
 
 	for {
-		nextFrame, err := rules.GameTick(resp.Game, lastFrame, w.Rulesets[resp.Game.Ruleset])
+		rs, ok := w.Rulesets[resp.Game.Ruleset]
+		if !ok {
+			log.WithField("ruleset", resp.Game.Ruleset).Info("ruleset not available using standard")
+			rs = w.Rulesets["standard"]
+		}
+		nextFrame, err := rules.GameTick(resp.Game, lastFrame, rs)
 		if err != nil {
 			// This is a GameFrame error, we can assume that this is a fatal
 			// error and no more game processing can take place at this point.

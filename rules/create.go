@@ -4,6 +4,8 @@ import (
 	"errors"
 	"math/rand"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/battlesnakeio/engine/controller/pb"
 	uuid "github.com/satori/go.uuid"
 )
@@ -53,6 +55,7 @@ func CreateInitialGame(req *pb.CreateRequest) (*pb.Game, []*pb.GameFrame, error)
 	}
 
 	if len(game.Ruleset) == 0 {
+		log.Info("No ruleset provided, falling back to standard")
 		game.Ruleset = "standard"
 	}
 
