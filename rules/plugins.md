@@ -25,3 +25,9 @@ type Ruleset interface {
 	CheckForDeath(width, height int32, frame *pb.GameFrame) []DeathUpdate
 }
 ```
+
+Plugins are loaded via the golang plugin package. https://golang.org/pkg/plugin/
+
+### Caveats
+* plugins only work on linux/mac
+* if the rules package changes, plugins must be re-compiled to the exact same version of the rules package

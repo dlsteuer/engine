@@ -104,6 +104,7 @@ message CreateRequest  {
   int32 MaxTurnsToNextFoodSpawn = 5;
   int32 SnakeTimeout = 6;
   string ruleset = 7;
+  map<string, string> extraData = 8;
 }
 message CreateResponse {
   string ID = 1;
@@ -137,6 +138,7 @@ message SnakeOptions {
   string ID = 3;
   string HeadType = 4;
   string TailType = 5;
+  map<string, string> ExtraData = 6;
 }
 
 message Game {
@@ -149,6 +151,7 @@ message Game {
   int32 MaxTurnsToNextFoodSpawn = 9;
   int32 TurnsSinceLastFoodSpawn = 10;
   string Ruleset = 11;
+  map<string, string> ExtraData = 12;
 };
 
 message GameFrame {
@@ -173,6 +176,7 @@ message Snake {
   string HeadType = 8;
   string TailType = 9;
   string Latency = 10;
+  map<string, string> ExtraData = 11;
 }
 
 message Death {

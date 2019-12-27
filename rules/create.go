@@ -52,6 +52,7 @@ func CreateInitialGame(req *pb.CreateRequest) (*pb.Game, []*pb.GameFrame, error)
 		Mode:                    string(GameModeMultiPlayer),
 		MaxTurnsToNextFoodSpawn: req.MaxTurnsToNextFoodSpawn,
 		Ruleset:                 req.Ruleset,
+		ExtraData:               req.ExtraData,
 	}
 
 	if len(game.Ruleset) == 0 {
@@ -133,6 +134,7 @@ func getSnakes(req *pb.CreateRequest) ([]*pb.Snake, error) {
 				startPoint.Clone(),
 				startPoint.Clone(),
 			},
+			ExtraData: opts.ExtraData,
 		}
 		if len(snake.ID) == 0 {
 			snake.ID = uuid.NewV4().String()
