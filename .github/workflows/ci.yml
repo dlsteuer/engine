@@ -15,15 +15,6 @@ jobs:
     - name: gofmt
       run: test -z $(gofmt -l .) || (gofmt -d . && exit 1)
 
-  lint:
-    name: Lint (golangci-lint)
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup golangci-lint Action
-        uses: nickhstr/action-setup-golangci-lint@master
-        version: 1.21.0
-        run: golangci-lint run
-
   build:
     name: Build (Docker)
     runs-on: ubuntu-latest
