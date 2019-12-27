@@ -23,4 +23,4 @@ func (sr *StandardRuleset) CheckForDeath(width, height int32, frame *pb.GameFram
 	return rules.CheckForDeath(width, height, frame)
 }
 
-var Ruleset = StandardRuleset{} // nolint don't lint this it's a plugin struct and thus not used at compile time
+var Ruleset = StandardRuleset{}
