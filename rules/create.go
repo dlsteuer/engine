@@ -55,7 +55,7 @@ func CreateInitialGame(req *pb.CreateRequest) (*pb.Game, []*pb.GameFrame, error)
 	}
 
 	if len(game.Ruleset) == 0 {
-		log.Info("No ruleset provided, falling back to standard")
+		log.WithField("Game ID", id).Info("No ruleset provided, falling back to standard")
 		game.Ruleset = "standard"
 	}
 

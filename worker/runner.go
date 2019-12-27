@@ -47,7 +47,10 @@ func (w *Worker) Runner(ctx context.Context, client pb.ControllerClient, id stri
 	for {
 		rs, ok := w.Rulesets[resp.Game.Ruleset]
 		if !ok {
-			log.WithField("ruleset", resp.Game.Ruleset).Info("ruleset not available using standard")
+			log.WithFields(log.Fields{
+				"ruleset": resp.Game.Ruleset,
+				"Game ID": resp.Game.ID,
+			}).Info("ruleset not available using standard")
 			rs = w.Rulesets["standard"]
 		}
 		nextFrame, err := rules.GameTick(resp.Game, lastFrame, rs)
