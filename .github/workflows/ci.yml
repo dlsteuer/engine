@@ -21,7 +21,8 @@ jobs:
     steps:
       - name: Setup golangci-lint Action
         uses: nickhstr/action-setup-golangci-lint@master
-        
+        version: 1.21.0
+        run: golangci-lint run
 
   build:
     name: Build (Docker)
