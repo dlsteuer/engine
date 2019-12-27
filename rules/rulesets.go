@@ -14,7 +14,7 @@ type Ruleset interface {
 
 type DefaultRuleset struct{}
 
-func (rs *DefaultRuleset) UpdateSnakeLocations(game *pb.Game, frame *pb.GameFrame, moves []*rules.SnakeUpdate) {
+func (rs *DefaultRuleset) UpdateSnakeLocations(game *pb.Game, frame *pb.GameFrame, moves []*SnakeUpdate) {
 	UpdateSnakeLocations(game, frame, moves)
 }
 func (rs *DefaultRuleset) UpdateSnakeHealth(frame *pb.GameFrame) {
@@ -26,6 +26,6 @@ func (rs *DefaultRuleset) CheckForSnakesEating(frame *pb.GameFrame) []*pb.Point 
 func (rs *DefaultRuleset) UpdateFood(game *pb.Game, gameFrame *pb.GameFrame, foodToRemove []*pb.Point) ([]*pb.Point, error) {
 	return UpdateFood(game, gameFrame, foodToRemove)
 }
-func (rs *DefaultRuleset) CheckForDeath(width, height int32, frame *pb.GameFrame) []rules.DeathUpdate {
+func (rs *DefaultRuleset) CheckForDeath(width, height int32, frame *pb.GameFrame) []DeathUpdate {
 	return CheckForDeath(width, height, frame)
 }
