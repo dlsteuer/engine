@@ -1,9 +1,14 @@
-package rules
+# Ruleset Plugin Architecture
 
-import (
-	"github.com/battlesnakeio/engine/controller/pb"
-)
+The game engine provides the ability to override the default ruleset via a plugin based architecture
+On startup the game engine will search `~/.battlesnake/rulesets` for available .so files to load.
+It will pull out a symbol called ruleset and make this available under the name of the library without the .so extension.
+For example if you create a ruleset plugin called `awesome.so` the engine will use that ruleset under the name `awesome`.
+There is an optional parameter on create game called ruleset, which will try and use the named ruleset when running that game.
 
+Ruleset plugins must expose a symbol called `Ruleset` that implements the following interface
+
+```go
 type Ruleset interface {
 	// UpdateSnakeLocations this function will update the snakes in the frame based upon the moves
 	// returned by each snake
@@ -19,21 +24,4 @@ type Ruleset interface {
 	// CheckForDeath checks to see if a snake has died, and returns any deaths as a DeathUpdate
 	CheckForDeath(width, height int32, frame *pb.GameFrame) []DeathUpdate
 }
-
-type DefaultRuleset struct{}
-
-func (rs *DefaultRuleset) UpdateSnakeLocations(game *pb.Game, frame *pb.GameFrame, moves []*SnakeUpdate) {
-	UpdateSnakeLocations(game, frame, moves)
-}
-func (rs *DefaultRuleset) UpdateSnakeHealth(frame *pb.GameFrame) {
-	UpdateSnakeHealth(frame)
-}
-func (rs *DefaultRuleset) CheckForSnakesEating(frame *pb.GameFrame) []*pb.Point {
-	return CheckForSnakesEating(frame)
-}
-func (rs *DefaultRuleset) UpdateFood(game *pb.Game, gameFrame *pb.GameFrame, foodToRemove []*pb.Point) ([]*pb.Point, error) {
-	return UpdateFood(game, gameFrame, foodToRemove)
-}
-func (rs *DefaultRuleset) CheckForDeath(width, height int32, frame *pb.GameFrame) []DeathUpdate {
-	return CheckForDeath(width, height, frame)
-}
+```
