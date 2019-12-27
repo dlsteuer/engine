@@ -45,13 +45,17 @@ func (w *Worker) Runner(ctx context.Context, client pb.ControllerClient, id stri
 	lastFrame := resp.LastFrame
 
 	for {
+		w.Lock()
 		rs, ok := w.Rulesets[resp.Game.Ruleset]
+		w.Unlock()
 		if !ok {
 			log.WithFields(log.Fields{
 				"ruleset": resp.Game.Ruleset,
 				"Game ID": resp.Game.ID,
 			}).Info("ruleset not available using standard")
+			w.Lock()
 			rs = w.Rulesets["standard"]
+			w.Unlock()
 		}
 		nextFrame, err := rules.GameTick(resp.Game, lastFrame, rs)
 		if err != nil {
