@@ -20,8 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions-contrib/golangci-lint@master
-        args: run
-
+      - name: Lint
+        run: golangci-lint run
+        
   build:
     name: Build (Docker)
     runs-on: ubuntu-latest
