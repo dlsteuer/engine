@@ -38,11 +38,14 @@ func TestWorker_RunnerErrors(t *testing.T) {
 	w := &Worker{
 		ControllerClient: client,
 		PollInterval:     1 * time.Millisecond,
-		RunGame:          Runner,
+		Rulesets: map[string]rules.Ruleset{
+			"standard": &rules.DefaultRuleset{},
+		},
 	}
+	w.RunGame = w.Runner
 
 	t.Run("NoGame", func(t *testing.T) {
-		err := Runner(ctx, client, "")
+		err := w.Runner(ctx, client, "")
 		require.NotNil(t, err)
 		require.Equal(t,
 			"rpc error: code = NotFound desc = controller: game not found",
@@ -72,7 +75,7 @@ func TestWorker_RunnerErrors(t *testing.T) {
 			_, err = store.Lock(c, id, "")
 			require.NoError(t, err)
 
-			return Runner(c, cl, id)
+			return w.Runner(c, cl, id)
 		}
 
 		err = w.run(ctx, 1)
@@ -146,8 +149,11 @@ func TestWorker_Runner(t *testing.T) {
 	w := &Worker{
 		ControllerClient: client,
 		PollInterval:     1 * time.Millisecond,
-		RunGame:          Runner,
+		Rulesets: map[string]rules.Ruleset{
+			"standard": &rules.DefaultRuleset{},
+		},
 	}
+	w.RunGame = w.Runner
 
 	for key, game := range games {
 		t.Run(key, func(t *testing.T) {

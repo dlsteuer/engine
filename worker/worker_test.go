@@ -37,8 +37,8 @@ func TestWorker_Run(t *testing.T) {
 	w := &Worker{
 		ControllerClient: client,
 		PollInterval:     1 * time.Millisecond,
-		RunGame:          Runner,
 	}
+	w.RunGame = w.Runner
 	ctx := context.Background()
 
 	setup := func() string {

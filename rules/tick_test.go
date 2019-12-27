@@ -124,7 +124,7 @@ func TestGetUniqOccupiedPoints(t *testing.T) {
 }
 
 func TestGameTickUpdatesTurnCounter(t *testing.T) {
-	gt, err := GameTick(commonGame, &pb.GameFrame{Turn: 5})
+	gt, err := GameTick(commonGame, &pb.GameFrame{Turn: 5}, &DefaultRuleset{})
 	require.NoError(t, err)
 	require.Equal(t, int32(6), gt.Turn)
 }
@@ -147,7 +147,7 @@ func TestGameTickUpdatesSnake(t *testing.T) {
 		Snakes: []*pb.Snake{
 			snake,
 		},
-	})
+	}, &DefaultRuleset{})
 	require.NoError(t, err)
 	require.Len(t, gt.Snakes, 1)
 	snake = gt.Snakes[0]
@@ -182,7 +182,7 @@ func TestGameFrameSnakeEats(t *testing.T) {
 
 	lastFrame.Snakes = []*pb.Snake{snake}
 
-	gt, err := GameTick(commonGame, lastFrame)
+	gt, err := GameTick(commonGame, lastFrame, &DefaultRuleset{})
 	require.NoError(t, err)
 	require.Len(t, gt.Snakes, 1)
 	snake = gt.Snakes[0]
@@ -206,7 +206,7 @@ func TestGameTickDeadSnakeDoNotUpdate(t *testing.T) {
 
 	lastFrame.Snakes = []*pb.Snake{snake}
 
-	gt, err := GameTick(commonGame, lastFrame)
+	gt, err := GameTick(commonGame, lastFrame, &DefaultRuleset{})
 	require.NoError(t, err)
 	require.Len(t, gt.Snakes, 1)
 	snake = gt.Snakes[0]
@@ -229,7 +229,7 @@ func TestGameTickUpdatesDeath(t *testing.T) {
 
 	lastFrame.Snakes = []*pb.Snake{snake}
 
-	gt, err := GameTick(commonGame, lastFrame)
+	gt, err := GameTick(commonGame, lastFrame, &DefaultRuleset{})
 	require.NoError(t, err)
 	require.NotNil(t, gt.Snakes[0].Death)
 }
@@ -282,7 +282,7 @@ func TestCanFollowTail(t *testing.T) {
 		Height: 20,
 	}, &pb.GameFrame{
 		Snakes: []*pb.Snake{snake},
-	})
+	}, &DefaultRuleset{})
 	require.NoError(t, err)
 	require.NotNil(t, next)
 	require.Nil(t, next.Snakes[0].Death)
@@ -303,7 +303,7 @@ func TestNextFoodSpawn(t *testing.T) {
 		MaxTurnsToNextFoodSpawn: 5,
 	}, &pb.GameFrame{
 		Snakes: snakes,
-	})
+	}, &DefaultRuleset{})
 	require.NoError(t, err)
 	require.Len(t, next.Food, 2)
 }
