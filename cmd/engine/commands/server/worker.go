@@ -6,6 +6,7 @@ import (
 	"os"
 	"path"
 	"plugin"
+	"runtime"
 	"sync"
 	"time"
 
@@ -113,7 +114,14 @@ var workerCmd = &cobra.Command{
 }
 
 func initializeRulesets() map[string]rules.Ruleset {
-	rulesets := map[string]rules.Ruleset{}
+	rulesets := map[string]rules.Ruleset{
+		"standard": &rules.DefaultRuleset{},
+	}
+
+	// plugins only work on windows, so just return the default ruleset
+	if runtime.GOOS == "windows" {
+		return rulesets
+	}
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		log.WithError(err).Error("unable to retrieve user home dir")
