@@ -19,10 +19,10 @@ jobs:
     name: Lint (golangci-lint)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions-contrib/golangci-lint@master
-      - name: Lint
-        run: golangci-lint run
+      - name: Setup golangci-lint Action
+        uses: nickhstr/action-setup-golangci-lint@master
         
+
   build:
     name: Build (Docker)
     runs-on: ubuntu-latest
