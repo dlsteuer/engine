@@ -2,19 +2,19 @@ package rules
 
 import "github.com/battlesnakeio/engine/controller/pb"
 
-type deathUpdate struct {
+type DeathUpdate struct {
 	Snake *pb.Snake
 	Death *pb.Death
 }
 
-// checkForDeath looks through the snakes with the updated coords and checks to see if any have died
+// CheckForDeath looks through the snakes with the updated coords and checks to see if any have died
 // possible death options are starvation (health has reached 0), wall collision, snake body collision
 // snake head collision (other snake is same size or greater)
-func checkForDeath(width, height int32, frame *pb.GameFrame) []deathUpdate {
-	updates := []deathUpdate{}
+func CheckForDeath(width, height int32, frame *pb.GameFrame) []DeathUpdate {
+	updates := []DeathUpdate{}
 	for _, s := range frame.AliveSnakes() {
 		if deathByHealth(s.Health) {
-			updates = append(updates, deathUpdate{
+			updates = append(updates, DeathUpdate{
 				Snake: s,
 				Death: &pb.Death{
 					Turn:  frame.Turn,
@@ -28,7 +28,7 @@ func checkForDeath(width, height int32, frame *pb.GameFrame) []deathUpdate {
 			continue
 		}
 		if deathByOutOfBounds(head, width, height) {
-			updates = append(updates, deathUpdate{
+			updates = append(updates, DeathUpdate{
 				Snake: s,
 				Death: &pb.Death{
 					Turn:  frame.Turn,
@@ -40,7 +40,7 @@ func checkForDeath(width, height int32, frame *pb.GameFrame) []deathUpdate {
 
 		for _, other := range frame.AliveSnakes() {
 			if deathByHeadCollision(s, other) {
-				updates = append(updates, deathUpdate{
+				updates = append(updates, DeathUpdate{
 					Snake: s,
 					Death: &pb.Death{
 						Turn:  frame.Turn,
@@ -62,7 +62,7 @@ func checkForDeath(width, height int32, frame *pb.GameFrame) []deathUpdate {
 						cause = DeathCauseSnakeCollision
 					}
 
-					updates = append(updates, deathUpdate{
+					updates = append(updates, DeathUpdate{
 						Snake: s,
 						Death: &pb.Death{
 							Turn:  frame.Turn,

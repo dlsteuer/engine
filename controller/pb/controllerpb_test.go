@@ -37,14 +37,22 @@ It has these top-level messages:
 */
 package pb
 
-import testing "testing"
-import rand "math/rand"
-import time "time"
-import proto "github.com/gogo/protobuf/proto"
-import jsonpb "github.com/gogo/protobuf/jsonpb"
-import fmt "fmt"
-import math "math"
-import _ "github.com/gogo/protobuf/gogoproto"
+import (
+	rand "math/rand"
+	testing "testing"
+
+	time "time"
+
+	proto "github.com/gogo/protobuf/proto"
+
+	jsonpb "github.com/gogo/protobuf/jsonpb"
+
+	fmt "fmt"
+
+	math "math"
+
+	_ "github.com/gogo/protobuf/gogoproto"
+)
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal

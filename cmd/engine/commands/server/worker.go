@@ -3,8 +3,13 @@ package server
 import (
 	"context"
 	"math/rand"
+	"os"
+	"path"
+	"plugin"
 	"sync"
 	"time"
+
+	"github.com/battlesnakeio/engine/rules"
 
 	"github.com/battlesnakeio/engine/controller/pb"
 	"github.com/battlesnakeio/engine/worker"
@@ -73,8 +78,9 @@ var workerCmd = &cobra.Command{
 		w := &worker.Worker{
 			ControllerClient: client,
 			PollInterval:     workerPollInterval,
-			RunGame:          worker.Runner,
+			Rulesets:         initializeRulesets(),
 		}
+		w.RunGame = w.Runner
 
 		// Begin pinging controller to push useful logs to an operator.
 		go func() {
@@ -104,4 +110,32 @@ var workerCmd = &cobra.Command{
 		}
 		wg.Wait()
 	},
+}
+
+func initializeRulesets() map[string]rules.Ruleset {
+	rulesets := map[string]rules.Ruleset{}
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		log.WithError(err).Error("unable to retrieve user home dir")
+		return rulesets
+	}
+	p, err := plugin.Open(path.Join(homeDir, ".battlesnake/rulesets/standard.so"))
+	if err != nil {
+		log.WithError(err).Error("unable to load standard ruleset")
+		return rulesets
+	}
+
+	srs, err := p.Lookup("Ruleset")
+	if err != nil {
+		log.WithError(err).Error("unable to find ruleset symbol in plugin")
+		return rulesets
+	}
+
+	rs, ok := srs.(rules.Ruleset)
+	if !ok {
+		log.WithError(err).Error("standard ruleset does not match ruleset interface")
+	}
+
+	rulesets["standard"] = rs
+	return rulesets
 }

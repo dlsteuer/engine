@@ -24,7 +24,6 @@ require (
 	github.com/onsi/ginkgo v1.11.0 // indirect
 	github.com/onsi/gomega v1.8.1 // indirect
 	github.com/pkg/errors v0.8.0
-	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_golang v0.9.1
 	github.com/prometheus/client_model v0.0.0-20180712105110-5c3871d89910 // indirect
 	github.com/prometheus/common v0.0.0-20181126121408-4724e9255275 // indirect
@@ -34,14 +33,15 @@ require (
 	github.com/sirupsen/logrus v1.0.5
 	github.com/spf13/cobra v0.0.2
 	github.com/spf13/pflag v1.0.0 // indirect
-	github.com/stretchr/testify v1.2.1
+	github.com/stretchr/testify v1.3.0
 	github.com/yuin/gopher-lua v0.0.0-20180416135241-b0fa786cf4ea // indirect
 	golang.org/x/crypto v0.0.0-20180330210355-12892e8c234f // indirect
 	golang.org/x/net v0.0.0-20180906233101-161cd47e91fd
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e // indirect
+	golang.org/x/sys v0.0.0-20190129075346-302c3dd5f1cc // indirect
 	golang.org/x/time v0.0.0-20181108054448-85acf8d2951c
-	google.golang.org/genproto v0.0.0-20180323190852-ab0870e398d5 // indirect
-	google.golang.org/grpc v1.11.0
+	google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8 // indirect
+	google.golang.org/grpc v1.14.0
 	gopkg.in/airbrake/gobrake.v2 v2.0.9 // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 	gopkg.in/gemnasium/logrus-airbrake-hook.v2 v2.1.2 // indirect

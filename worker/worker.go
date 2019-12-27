@@ -7,6 +7,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/battlesnakeio/engine/rules"
+
 	"github.com/battlesnakeio/engine/controller/pb"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"
@@ -19,6 +21,7 @@ type Worker struct {
 	ControllerClient pb.ControllerClient
 	PollInterval     time.Duration
 	RunGame          func(context.Context, pb.ControllerClient, string) error
+	Rulesets         map[string]rules.Ruleset
 }
 
 // Run will run the worker in a loop.

@@ -8,7 +8,7 @@ import (
 )
 
 func TestDeathCauseStarvation(t *testing.T) {
-	updates := checkForDeath(20, 20, &pb.GameFrame{
+	updates := CheckForDeath(20, 20, &pb.GameFrame{
 		Turn: 3,
 		Snakes: []*pb.Snake{
 			&pb.Snake{
@@ -30,7 +30,7 @@ func TestDeathCauseWallCollision(t *testing.T) {
 		{X: 1, Y: 20},
 	}
 	for _, p := range points {
-		updates := checkForDeath(20, 20, &pb.GameFrame{
+		updates := CheckForDeath(20, 20, &pb.GameFrame{
 			Turn: 3,
 			Snakes: []*pb.Snake{
 				&pb.Snake{
@@ -46,7 +46,7 @@ func TestDeathCauseWallCollision(t *testing.T) {
 }
 
 func TestDeathCauseSnakeCollision(t *testing.T) {
-	updates := checkForDeath(20, 20, &pb.GameFrame{
+	updates := CheckForDeath(20, 20, &pb.GameFrame{
 		Turn: 3,
 		Snakes: []*pb.Snake{
 			&pb.Snake{
@@ -72,7 +72,7 @@ func TestDeathCauseSnakeCollision(t *testing.T) {
 }
 
 func TestDeathCauseHeadToHeadCollision(t *testing.T) {
-	updates := checkForDeath(20, 20, &pb.GameFrame{
+	updates := CheckForDeath(20, 20, &pb.GameFrame{
 		Turn: 3,
 		Snakes: []*pb.Snake{
 			&pb.Snake{
@@ -101,7 +101,7 @@ func TestDeathCauseHeadToHeadCollision(t *testing.T) {
 }
 
 func TestDeathCauseHeadToHeadCollisionDifferentLengths(t *testing.T) {
-	updates := checkForDeath(20, 20, &pb.GameFrame{
+	updates := CheckForDeath(20, 20, &pb.GameFrame{
 		Turn: 3,
 		Snakes: []*pb.Snake{
 			{
@@ -130,7 +130,7 @@ func TestDeathCauseHeadToHeadCollisionDifferentLengths(t *testing.T) {
 }
 
 func TestDeathCauseSnakeSelfCollision(t *testing.T) {
-	updates := checkForDeath(20, 20, &pb.GameFrame{
+	updates := CheckForDeath(20, 20, &pb.GameFrame{
 		Turn: 3,
 		Snakes: []*pb.Snake{
 			&pb.Snake{

@@ -49,6 +49,11 @@ func CreateInitialGame(req *pb.CreateRequest) (*pb.Game, []*pb.GameFrame, error)
 		SnakeTimeout:            snakeTimeout,
 		Mode:                    string(GameModeMultiPlayer),
 		MaxTurnsToNextFoodSpawn: req.MaxTurnsToNextFoodSpawn,
+		Ruleset:                 req.Ruleset,
+	}
+
+	if len(game.Ruleset) == 0 {
+		game.Ruleset = "standard"
 	}
 
 	if len(snakes) == 1 {

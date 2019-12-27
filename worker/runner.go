@@ -35,9 +35,9 @@ func init() {
 	prometheus.MustRegister(framesProcessed)
 }
 
-// Runner will run an invidual game to completion. It takes a game id and a
+// Runner will run an individual game to completion. It takes a game id and a
 // connection to the controller as arguments.
-func Runner(ctx context.Context, client pb.ControllerClient, id string) error {
+func (w *Worker) Runner(ctx context.Context, client pb.ControllerClient, id string) error {
 	resp, err := client.Status(ctx, &pb.StatusRequest{ID: id})
 	if err != nil {
 		return err
@@ -45,7 +45,7 @@ func Runner(ctx context.Context, client pb.ControllerClient, id string) error {
 	lastFrame := resp.LastFrame
 
 	for {
-		nextFrame, err := rules.GameTick(resp.Game, lastFrame)
+		nextFrame, err := rules.GameTick(resp.Game, lastFrame, w.Rulesets[resp.Game.Ruleset])
 		if err != nil {
 			// This is a GameFrame error, we can assume that this is a fatal
 			// error and no more game processing can take place at this point.

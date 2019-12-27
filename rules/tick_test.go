@@ -10,7 +10,7 @@ import (
 )
 
 func TestUpdateFood(t *testing.T) {
-	updated, err := updateFood(&pb.Game{Width: 20, Height: 20}, &pb.GameFrame{
+	updated, err := UpdateFood(&pb.Game{Width: 20, Height: 20}, &pb.GameFrame{
 		Food: []*pb.Point{
 			{X: 1, Y: 1},
 			{X: 1, Y: 2},
@@ -37,7 +37,7 @@ func TestUpdateFood(t *testing.T) {
 }
 
 func TestUpdateFoodWithFullBoard(t *testing.T) {
-	updated, err := updateFood(&pb.Game{Width: 2, Height: 2}, &pb.GameFrame{
+	updated, err := UpdateFood(&pb.Game{Width: 2, Height: 2}, &pb.GameFrame{
 		Food: []*pb.Point{
 			{X: 0, Y: 0},
 		},
@@ -246,7 +246,7 @@ func TestUpdateSnakes(t *testing.T) {
 			Err:   errors.New("some error"),
 		},
 	}
-	updateSnakes(&pb.Game{}, &pb.GameFrame{
+	UpdateSnakeLocations(&pb.Game{}, &pb.GameFrame{
 		Snakes: []*pb.Snake{snake},
 	}, moves)
 	require.Equal(t, &pb.Point{X: 1, Y: 0}, snake.Head(), "snake did not move up")
@@ -257,7 +257,7 @@ func TestUpdateSnakes(t *testing.T) {
 			Move:  "left",
 		},
 	}
-	updateSnakes(&pb.Game{}, &pb.GameFrame{
+	UpdateSnakeLocations(&pb.Game{}, &pb.GameFrame{
 		Snakes: []*pb.Snake{snake},
 	}, moves)
 	require.Equal(t, &pb.Point{X: 0, Y: 0}, snake.Head(), "snake did not move left")
@@ -317,7 +317,7 @@ func TestCheckForSnakesEating(t *testing.T) {
 			{X: 2, Y: 2},
 		},
 	}
-	checkForSnakesEating(&pb.GameFrame{
+	CheckForSnakesEating(&pb.GameFrame{
 		Food: []*pb.Point{
 			{X: 2, Y: 1},
 		},
@@ -336,7 +336,7 @@ func TestCheckForSnakesNotEating(t *testing.T) {
 			{X: 2, Y: 2},
 		},
 	}
-	checkForSnakesEating(&pb.GameFrame{
+	CheckForSnakesEating(&pb.GameFrame{
 		Food:   []*pb.Point{},
 		Snakes: []*pb.Snake{snake},
 	})

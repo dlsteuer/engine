@@ -103,6 +103,7 @@ message CreateRequest  {
   repeated SnakeOptions Snakes = 4;
   int32 MaxTurnsToNextFoodSpawn = 5;
   int32 SnakeTimeout = 6;
+  string ruleset = 7;
 }
 message CreateResponse {
   string ID = 1;
@@ -147,6 +148,7 @@ message Game {
   string Mode = 8;
   int32 MaxTurnsToNextFoodSpawn = 9;
   int32 TurnsSinceLastFoodSpawn = 10;
+  string Ruleset = 11;
 };
 
 message GameFrame {
