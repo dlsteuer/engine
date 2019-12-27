@@ -7,6 +7,7 @@ require (
 	github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973 // indirect
 	github.com/davecgh/go-spew v1.1.0
 	github.com/dlsteuer/miniredis v0.0.0-20180608020542-4127b500a242
+	github.com/fsnotify/fsnotify v1.4.7
 	github.com/go-redis/redis v6.10.2+incompatible
 	github.com/gogo/protobuf v1.1.1
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b // indirect

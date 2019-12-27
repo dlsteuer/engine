@@ -12,6 +12,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/fsnotify/fsnotify"
+
 	"github.com/battlesnakeio/engine/rules"
 
 	"github.com/battlesnakeio/engine/controller/pb"
@@ -81,9 +83,11 @@ var workerCmd = &cobra.Command{
 		w := &worker.Worker{
 			ControllerClient: client,
 			PollInterval:     workerPollInterval,
-			Rulesets:         initializeRulesets(),
+			Rulesets:         loadRulesets(),
 		}
 		w.RunGame = w.Runner
+
+		setupWatcher(w)
 
 		// Begin pinging controller to push useful logs to an operator.
 		go func() {
@@ -115,7 +119,50 @@ var workerCmd = &cobra.Command{
 	},
 }
 
-func initializeRulesets() map[string]rules.Ruleset {
+func setupWatcher(w *worker.Worker) {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		log.WithError(err).Error("unable to retrieve user home dir")
+		return
+	}
+	pluginDir := path.Join(homeDir, ".battlesnake/rulesets/")
+
+	watcher, err := fsnotify.NewWatcher()
+	if err != nil {
+		log.WithError(err).Error("unable to create file system watcher")
+		return
+	}
+
+	go func() {
+		for {
+			select {
+			case event, ok := <-watcher.Events:
+				if !ok {
+					log.Error("not ok while watching filesystem events")
+					return
+				}
+				log.WithField("event", event).Info("fsnotify: event received")
+				w.Lock()
+				w.Rulesets = loadRulesets()
+				w.Unlock()
+			case err, ok := <-watcher.Errors:
+				if !ok {
+					log.Error("not ok while watching filesystem events")
+					return
+				}
+				log.WithError(err).Error("fsnotify: error watching events")
+			}
+		}
+	}()
+
+	err = watcher.Add(pluginDir)
+	if err != nil {
+		log.WithError(err).Error("unable to add directory to watcher.")
+	}
+	log.WithField("directory", pluginDir).Info("fsnotify: watching directory")
+}
+
+func loadRulesets() map[string]rules.Ruleset {
 	rulesets := map[string]rules.Ruleset{
 		"standard": &rules.DefaultRuleset{},
 	}

@@ -5,6 +5,7 @@ package worker
 
 import (
 	"context"
+	"sync"
 	"time"
 
 	"github.com/battlesnakeio/engine/rules"
@@ -18,6 +19,7 @@ import (
 // Worker is the worker interface. It wraps a main Perform functions which is
 // where all of the game logic should live.
 type Worker struct {
+	sync.Mutex
 	ControllerClient pb.ControllerClient
 	PollInterval     time.Duration
 	RunGame          func(context.Context, pb.ControllerClient, string) error
